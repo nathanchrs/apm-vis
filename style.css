@@ -58,21 +58,15 @@ a {
   position: relative;
   z-index: 0;
   text-decoration: none;
-}
-a::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  background-color: #BEDCF4;
-  background-image: linear-gradient(60deg, #a1c4fd 0%, #c2e9fb 100%);
-  height: 0.3em;
-  bottom: 0.1em;
-  left: 0;
-  right: 0;
+  background-color: transparent;
+  background-image: linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%);
+  background-repeat: no-repeat;
+  background-position: 0 95%;
+  background-size: 100% 20%;
   transition: 0.2s;
 }
-a:hover::before {
-  height: 1.1em;
+a:hover {
+  background-size: 100% 100%;
   transition: 0.1s;
 }
 
@@ -95,7 +89,7 @@ footer {
   background-color: #eee;
   font-size: 0.7rem;
   margin-top: 36px;
-  padding: 36px 5% 24px 5%;
+  padding: 36px 5% 12px 5%;
 }
 
 footer h4 {
