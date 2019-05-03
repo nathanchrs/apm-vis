@@ -1,0 +1,109 @@
+.DEBUG {
+  border: solid 1px #DEDEDE;
+}
+
+html {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+section.cover {
+  height: 60vh;
+  background-color: #444;
+  background-image: url('students-background-dark.jpg');
+  background-size: cover;
+  position: relative;
+}
+
+section.cover .title-container {
+  position: absolute;
+  left: 5%;
+  bottom: 10%;
+}
+
+h1 {
+  font-family: 'Lora', serif;
+  color: #fff;
+  font-weight: 700;
+  font-size: 3.6rem;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-family: 'Lora', serif;
+  color: #fff;
+  font-size: 2rem;
+  font-style: italic;
+}
+
+section.story {
+  padding: 36px 5%;
+}
+
+section.story.intro {
+  background-color: #eee;
+}
+
+h2 {
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+a {
+  color: inherit;
+  position: relative;
+  z-index: 0;
+  text-decoration: none;
+}
+a::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  background-color: #BEDCF4;
+  background-image: linear-gradient(60deg, #a1c4fd 0%, #c2e9fb 100%);
+  height: 0.3em;
+  bottom: 0.1em;
+  left: 0;
+  right: 0;
+  transition: 0.2s;
+}
+a:hover::before {
+  height: 1.1em;
+  transition: 0.1s;
+}
+
+p {
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+hr {
+  border: solid 1px #ddd;
+}
+
+.sankey-diagram {
+  background-color: #ccc;
+  height: 500px;
+}
+
+footer {
+  color: #333;
+  background-color: #eee;
+  font-size: 0.7rem;
+  margin-top: 36px;
+  padding: 36px 5% 24px 5%;
+}
+
+footer h4 {
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+footer p {
+  margin-bottom: 24px;
+}
