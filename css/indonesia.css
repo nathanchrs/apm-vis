@@ -8,7 +8,7 @@
 }
 
 #subunits .active {
-  fill: orange;
+  fill: orange !important;
 }
 
 #state-borders {

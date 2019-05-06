@@ -24,54 +24,73 @@ tooltip = d3.select("body").append("div")
 var yearSlider = d3.select("#year-slider");
 var sideInfo = d3.select("#side-info").style("color", "white");
 
-/* Import JSON data */
+var color = d3.scaleThreshold()
+  .domain([87.5, 90, 92.5, 95, 97.5])
+  .range(["#CCCCFF", "#66CCCC", "#6699CC", "#3366CC", "#333366"]);
+
+/* Import JSON Map data */
 d3.json("data/indonesia.json").then(function (us) {
-  g.append("g")
-    .attr("id", "subunits")
-    .selectAll("path")
-    .data(topojson.feature(us, us.objects.states_provinces).features)
-    .enter().append("path")
-    .attr("d", path)
-    // .on("click", clicked)
-    .on("mouseover", mouseover)
-    .on("mouseout", mouseout);
-  g.append("path")
-    .datum(topojson.mesh(us, us.objects.states_provinces, function (a, b) { return a !== b; }))
-    .attr("id", "state-borders")
-    .attr("d", path);
+  var stateProvinces = topojson.feature(us, us.objects.states_provinces).features;
+  var currentYear = 0;
+
+  /* Import csv APM data */
+  d3.csv("data/indonesia.csv").then(data => {
+    var dataByProvince = d3.nest()
+      .key(function (d) { return d.province; })
+      .map(data);
+
+    stateProvinces.forEach(singleProvince => {
+      singleProvince.yearlyAPM = dataByProvince["$" + singleProvince.properties.name]
+    });
+
+    g.append("g")
+      .attr("id", "subunits")
+      .selectAll("path")
+      .data(stateProvinces)
+      .enter().append("path")
+      .attr("d", path)
+      .on("click", clicked)
+      .on("mouseover", mouseover)
+      .on("mouseout", mouseout)
+      .style("fill", function (d) {
+        if (d.yearlyAPM) {
+          return color(d.yearlyAPM[0].APM);
+        }
+      });
+    g.append("path")
+      .datum(topojson.mesh(us, us.objects.states_provinces, function (a, b) { return a !== b; }))
+      .attr("id", "state-borders")
+      .attr("d", path);
+
+    yearSlider
+      .attr("min", data[0].year)
+      .attr("max", data[data.length - 1].year)
+      .on("input", /* TODO: update data */ function () {
+        currentYear = yearSlider.property("value"); // get the current year
+        // console.log(data.filter(x => x.year == currentYear));
+        sideInfo.data(data.filter(x => x.year == currentYear)).enter().append("li")
+          .text(function (d) {
+            return d.value
+          });;
+      });
+    sideInfo
+      .data(data)
+      .enter().append("li")
+      .text(function (d) {
+        return d.value
+      });
+  }).catch(error => console.error(error));
 }).catch(error => console.error(error));
 
-var currentYear = 0;
-/* Import csv data */
-d3.csv("data/indonesia.csv").then(data => {
-  yearSlider
-    .attr("min", data[0].year)
-    .attr("max", data[data.length - 1].year)
-    .on("input", /* TODO: update data */ function () {
-      console.log(+this.value)
-      currentYear = yearSlider.property("value"); // get the current year
-      console.log(data.filter(x => x.year == currentYear));
-      sideInfo.data(data.filter(x => x.year == currentYear)).enter().append("li")
-        .text(function (d) {
-          return d.value
-        });;
-    });
-  sideInfo
-    .data(data)
-    .enter().append("li")
-    .text(function (d) {
-      return d.value
-    });
-}).catch(error => console.error(error));
 
 function regionInfo(region) {
-  return region.properties.name.toUpperCase();
+  return region.properties.name ? region.properties.name.toUpperCase() : region.properties.name;
 }
 //*/
 function clicked(d) {
+  console.log(d);
   var x, y, k;
   if (d) {
-    // console.log(d.properties);
     document.getElementById('info').innerHTML = regionInfo(d);
   } else {
     document.getElementById('info').innerHTML = "INDONESIA";
@@ -97,7 +116,6 @@ function clicked(d) {
 }
 
 function mouseover(d) {
-  var x, y, k;
   if (d) {
     document.getElementById('info').innerHTML = regionInfo(d);
   } else {
