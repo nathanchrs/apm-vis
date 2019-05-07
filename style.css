@@ -79,9 +79,9 @@ hr {
   border: solid 1px #ddd;
 }
 
-.sankey-diagram {
-  background-color: #ccc;
-  height: 500px;
+#sankey-diagram {
+  min-width: 600px;
+  max-height: 420px;
 }
 
 footer {
