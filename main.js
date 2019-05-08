@@ -1,4 +1,3 @@
-
 function transformSankeyData(rawData, year) {
 
   const levels = {
@@ -50,10 +49,7 @@ function transformSankeyData(rawData, year) {
     }
   }
   if (!currentYearData) {
-    return {
-      nodes: [],
-      links: []
-    }; // No data for the matching year
+    return null; // No data for the matching year
   }
 
   let links = [];
@@ -87,52 +83,102 @@ function transformSankeyData(rawData, year) {
   return { nodes, links };
 }
 
+function drawSankey(rawData, year) {
+  sankeySvg.append('g')
+    .classed('links', true);
+
+  sankeySvg.append('g')
+    .classed('nodes', true);
+
+  const years = rawData.map(row => row.year);
+  yearSlider
+    .min(years[0])
+    .max(years[years.length - 1])
+    .tickValues(years)
+    .on('onchange', newYear => {
+      updateSankey(rawData, newYear);
+    });
+
+  sankeySvg.append('g')
+    .attr('transform', 'translate(20, 460)')
+    .call(yearSlider);
+
+  updateSankey(rawData, year);
+}
+
+function updateSankey(rawData, year) {
+  const data = transformSankeyData(rawData, year);
+  if (!data) {
+    console.error('No data for year ' + year);
+    return;
+  }
+  const sankeyGraph = sankey(data);
+
+  // Draw links
+  const links = sankeySvg.select('.links')
+    .selectAll('path')
+    .data(sankeyGraph.links);
+
+  links.exit().remove();
+
+  links.enter()
+    .append('path')
+      .classed('link', true)
+      .attr('fill', 'none')
+    .merge(links)
+      .transition()
+        .attr('d', d3.sankeyLinkHorizontal())
+        .attr('stroke', d => d.color)
+        .attr('stroke-width', d => d.width);
+
+  // Draw nodes
+  const nodes = sankeySvg.select('.nodes')
+    .selectAll('rect')
+    .data(sankeyGraph.nodes);
+
+  nodes.exit().remove();
+
+  nodes.enter()
+    .append('rect')
+      .classed('node', true)
+      .attr('fill', '#000')
+    .merge(nodes)
+      .transition()
+        .attr('x', d => d.x0)
+        .attr('y', d => d.y0)
+        .attr('width', d => d.x1 - d.x0)
+        .attr('height', d => d.y1 - d.y0);
+
+  yearSlider.silentValue(year);
+}
+
+// Setup Sankey generator
 const sankey = d3.sankey()
-  .extent([[0, 16], [360, 240]])
+  .extent([[0, 24], [600, 400]])
   .nodeId(d => d.id)
   .nodeAlign(d3.sankeyJustify)
   .nodeSort(null) // Follow input order
-  .nodePadding(10)
-  .nodeWidth(3);
+  .nodePadding(20)
+  .nodeWidth(6);
+
+// Setup container SVG
+const sankeySvg = d3.select('#sankey-diagram')
+  .attr('viewBox', '0 0 750 500');
+
+const yearSlider = d3
+  .sliderHorizontal()
+  .step(1)
+  .width(400)
+  .tickFormat(d3.format('d'))
+  .displayValue(false);
 
 d3.csv('sankey.csv', d3.autoType)
   .then(function (rawData) {
-    const data = transformSankeyData(rawData, 2018);
-    const sankeyGraph = sankey(data);
-
-    let sankeySvg = d3.select('#sankey-diagram')
-      .attr('viewBox', '0 0 480 260');
-
-    // Draw links
-    sankeySvg.append('g')
-      .classed('links', true)
-      .selectAll('path')
-      .data(sankeyGraph.links)
-      .enter()
-        .append('path')
-          .classed('link', true)
-          .attr('d', d3.sankeyLinkHorizontal())
-          .attr('fill', 'none')
-          .attr('stroke', d => d.color)
-          .attr('stroke-width', d => d.width)
-          .append('title')
-            .text(d => `${d.title}\n${d.value.toLocaleString()}%`);
-
-
-    // Draw node
-    sankeySvg.append('g')
-      .classed('nodes', true)
-      .selectAll('rect')
-      .data(sankeyGraph.nodes)
-      .enter()
-      .append('rect')
-      .classed('node', true)
-      .attr('x', d => d.x0)
-      .attr('y', d => d.y0)
-      .attr('width', d => d.x1 - d.x0)
-      .attr('height', d => d.y1 - d.y0)
-      .attr('fill', '#000');
-
+    if (rawData && rawData.length) {
+      rawData.sort((a, b) => a.year - b.year);
+      const initialYear = rawData[rawData.length - 1].year;
+      drawSankey(rawData, initialYear);
+    }
   })
   .catch(function (err) {
     console.error(err);
