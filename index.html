@@ -37,10 +37,6 @@
       yang mengikuti sekolah dasar.<br />
       Peta ini menunjukkan persebaran APM per provinsi di Indonesia.
     </p>
-
-    <div class="sankey-diagram DEBUG">
-
-    </div>
   </section>
 
   <section class="story">
@@ -51,10 +47,7 @@
       yang mengikuti sekolah dasar.<br />
       Peta ini menunjukkan persebaran APM per provinsi di Indonesia.
     </p>
-  
-    <div class="sankey-diagram DEBUG">
-  
-    </div>
+    <svg id="sankey-diagram" class="DEBUG"></svg>
   </section>
 
   <section class="story">
@@ -65,10 +58,6 @@
       yang mengikuti sekolah dasar.<br />
       Peta ini menunjukkan persebaran APM per provinsi di Indonesia.
     </p>
-  
-    <div class="sankey-diagram DEBUG">
-  
-    </div>
   </section>
 
   <footer>
@@ -84,11 +73,15 @@
     </p>
     <p>
       Dibuat oleh <a href="https://github.com/nathanchrs">Jonathan Christopher</a>, Rionaldi Chandraseta dan Aldrich Valentino Halim
-      untuk mata kuliah IF4061 Visualisasi Data di Teknik Informatika ITB.
+      untuk kelas IF4061 Visualisasi Data tahun 2019 di Teknik Informatika ITB.<br />
+      Kode sumber dapat dilihat di <a href="https://github.com/nathanchrs/apm-vis">Github</a>.
     </p>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script src="node_modules/d3/dist/d3.min.js"></script>
+  <script src="d3-sankey-align-top.js"></script>
+  <script src="node_modules/d3-simple-slider/dist/d3-simple-slider.min.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>
