@@ -7,10 +7,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 
-  <!-- <link rel="stylesheet" type="text/css"
-    href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400italic,600italic,700italic,200,300,400,600,700,900"> -->
   <script src="node_modules/d3/dist/d3.min.js"></script>
   <script src="node_modules/topojson/dist/topojson.min.js"></script>
+
+  <link rel="stylesheet" href="node_modules/reset-css/reset.css">
 
   <style>
     body,
@@ -24,13 +24,6 @@
       font-size: 1em;
       color: #333;
       font-weight: 400;
-    }
-
-    #content {
-      margin: 5px;
-      padding: 20px;
-      /* width: 805px; */
-      border: 1px solid #ccc;
     }
 
     #map {
@@ -106,18 +99,62 @@
     .wide {
       width: 140px;
     }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .col {
+      padding: 1.5rem;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .dot {
+      stroke: #000;
+    }
+
+    .tooltips {
+      position: absolute;
+      padding: 7px;
+      font-size: 0.9em;
+      pointer-events: none;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+
+      -moz-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.25);
+      -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.25);
+      box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.25);
+      width: 120px;
+      height: 35px;
+      pointer-events: none;
+      margin-left: 7px;
+    }
   </style>
 
 </head>
 
 <body>
-  <div id="content">
-    <h1>Distribusi APM Indonesia, 1996-2012</h1>
-    <h2 class="year"></h2>
-    <div class="slider"></div>
-    <div id="map"></div>
-    <p>Source: Indonesia Educational Statistics in Brief, edisi tahun ajaran 2011/2012 - 2017/2018 oleh Kementrian
-      Pendidikan dan Kebudayaan.</p>
+  <div id="content" class="row">
+    <div class="col">
+      <h1>Distribusi APM Indonesia, 1996-2012</h1>
+      <div id="map"></div>
+      <div class="slider"></div>
+      <h2 class="year"></h2>
+      <p>Source: Indonesia Educational Statistics in Brief, edisi tahun ajaran 2011/2012 - 2017/2018 oleh Kementrian
+        Pendidikan dan Kebudayaan.</p>
+    </div>
+    <div class="col">
+      <h1>Tingkat APM</h1>
+      <div id="distribution"></div>
+    </div>
   </div>
 
   <script type="text/javascript" src="js/indonesia.js"></script>
