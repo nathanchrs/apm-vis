@@ -27,7 +27,7 @@ var distributionSvg = d3.select("#distribution").append("svg")
   .attr("transform", "translate(" + distributionMargins.left + "," + distributionMargins.top + ")");
 
 var distributionTooltip = d3.select("body").append("div")
-  .attr("class", "tooltips")
+  .attr("class", "tooltip")
   .style("opacity", 0);
 
 var mapTooltip = d3.select("body").append("div")
@@ -122,7 +122,7 @@ function ready(data, us) {
 
   legenditem.append("text")
     .attr("x", width - 240)
-    .attr("y", -10)
+    .attr("y", 16)
     .style("text-anchor", "middle")
     .text(function (d, i) { return legendText[i]; });
 
