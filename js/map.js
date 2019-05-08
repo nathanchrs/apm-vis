@@ -13,20 +13,15 @@ tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 
-queue()
-  .defer(d3.csv, "data/smoking-data.csv")
-  .defer(d3.json, "data/us.json")
-  .await(ready);
+var promises = [];
+promises.push(d3.csv("data/smoking-data.csv"));
+promises.push(d3.json("data/us.json"));
 
-// var promises = [];
-// promises.push(d3.csv("data/smoking-data.csv"));
-// promises.push(d3.json("data/us.json"));
-
-// Promise.all(promises)
-//   .then(values => {
-//     ready(null, values[0], values[1]);
-//   })
-//   .catch(error => console.error(error));
+Promise.all(promises)
+  .then(values => {
+    ready(null, values[0], values[1]);
+  })
+  .catch(error => console.error(error));
 
 var legendText = ["", "10%", "", "15%", "", "20%", "", "25%"];
 var legendColors = ["#fff7bc", "#fee391", "#fec44f", "#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"];
@@ -47,17 +42,17 @@ function ready(error, data, us) {
     .map(data);
 
   counties.features.forEach(function (county) {
-    county.properties.years = dataByCountyByYear[+county.id]
+    county.properties.years = dataByCountyByYear["$" + county.id];
   });
 
-  var color = d3.scale.threshold()
+  var color = d3.scaleThreshold()
     .domain([10, 12.5, 15, 17.5, 20, 22.5, 25])
     .range(["#fff7bc", "#fee391", "#fec44f", "#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"]);
 
-  var projection = d3.geo.albersUsa()
+  var projection = d3.geoAlbersUsa()
     .translate([width / 2, height / 2]);
 
-  var path = d3.geo.path()
+  var path = d3.geoPath()
     .projection(projection);
 
   var countyShapes = svg.selectAll(".county")
@@ -73,10 +68,10 @@ function ready(error, data, us) {
         .duration(250)
         .style("opacity", 1);
       tooltip.html(
-        "<p><strong>" + d.properties.years[1996][0].county + ", " + d.properties.years[1996][0].state + "</strong></p>" +
-        "<table><tbody><tr><td class='wide'>Smoking rate in 1996:</td><td>" + formatPercent((d.properties.years[1996][0].rate) / 100) + "</td></tr>" +
-        "<tr><td>Smoking rate in 2012:</td><td>" + formatPercent((d.properties.years[2012][0].rate) / 100) + "</td></tr>" +
-        "<tr><td>Change:</td><td>" + formatPercent((d.properties.years[2012][0].rate - d.properties.years[1996][0].rate) / 100) + "</td></tr></tbody></table>"
+        "<p><strong>" + d.properties.years["$1996"][0].county + ", " + d.properties.years["$1996"][0].state + "</strong></p>" +
+        "<table><tbody><tr><td class='wide'>Smoking rate in 1996:</td><td>" + formatPercent((d.properties.years["$1996"][0].rate) / 100) + "</td></tr>" +
+        "<tr><td>Smoking rate in 2012:</td><td>" + formatPercent((d.properties.years["$2012"][0].rate) / 100) + "</td></tr>" +
+        "<tr><td>Change:</td><td>" + formatPercent((d.properties.years["$2012"][0].rate - d.properties.years["$1996"][0].rate) / 100) + "</td></tr></tbody></table>"
       )
         .style("left", (d3.event.pageX + 15) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
@@ -120,10 +115,9 @@ function ready(error, data, us) {
     slider.property("value", year);
     d3.select(".year").text(year);
     countyShapes.style("fill", function (d) {
-      // console.log(d);
       const years = d.properties.years;
       if (years) {
-        return color(d.properties.years[year][0].rate)
+        return color(d.properties.years["$" + year][0].rate)
       }
     });
   }
