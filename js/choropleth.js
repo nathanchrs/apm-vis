@@ -47,22 +47,6 @@ function drawChoropleth(topoJsonData, data, year, level) {
     .data(choroplethLegendText);
 
   updateChoropleth(topoJsonData, data, year, level);
-
-/*
-
-    // y-axis
-    distributionContainer.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("class", "label")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-
-    updateMapAndDistribution(2003, "SD", provinces, dataByYear);
-*/
 }
 
 function updateChoropleth(topoJsonData, data, year, level) {
@@ -70,7 +54,7 @@ function updateChoropleth(topoJsonData, data, year, level) {
 
   // Map
   const mapPaths = mapContainer.selectAll('path')
-    .data(geoJsonData.features);
+    .data(geoJsonData.features, d => d.properties.province);
 
   mapPaths.exit().remove();
   const mapPathsEnter = mapPaths.enter()
@@ -231,17 +215,6 @@ const choroplethYearSlider = d3
   .tickFormat(d3.format('d'))
   .displayValue(false);
 
-
-/*
-var yValue = function (d) { return d.APM },
-  yScale = d3.scaleLinear().range([height, 0])
-    .domain([0, 1]),
-  yMap = function (d) { return yScale(yValue(d)) },
-  yAxis = d3.axisLeft(yScale).tickSize(0);
-
-
-*/
-
 Promise.all([
   d3.csv('data/choropleth.csv'),
   d3.json('data/indonesia.json')
@@ -268,39 +241,3 @@ Promise.all([
     drawChoropleth(topoJsonData, indexedData, initialYear, initialLevel);
   })
   .catch(err => console.error(err));
-
-/*
-function updateMapAndDistribution(year, educationLevel, provinces, dataByYear) {
-
-  // draw dots
-  var circles = distributionSvg.selectAll(".dot").data([]);
-  circles.exit().remove();
-
-  yScale.domain([
-    d3.min(dataByYear["$" + year], function (d) { return d["APM_" + educationLevel] }),
-    d3.max(dataByYear["$" + year], function (d) { return d["APM_" + educationLevel] })
-  ]);
-
-  circles = distributionSvg.selectAll(".dot")
-    .data(dataByYear["$" + year]).enter()
-    .append("circle")
-    .attr("class", "dot")
-    .attr("r", 7)
-    .attr("cy", function (d) { return yScale(d["APM_" + educationLevel]) })
-    .style("fill", function (d) { return color(d["APM_" + educationLevel]); })
-    .on("mouseover", function (d) {
-      distributionTooltip.transition()
-        .duration(200)
-        .style("opacity", .9);
-      distributionTooltip.html(d.province + "<br>" + d["APM_" + educationLevel] + "%")
-        .style("left", (d3.event.pageX + 5) + "px")
-        .style("top", (d3.event.pageY - 28) + "px");
-    })
-    .on("mouseout", function (d) {
-      distributionTooltip.transition()
-        .duration(500)
-        .style("opacity", 0);
-    })
-    .merge(circles).transition();
-}
-*/
