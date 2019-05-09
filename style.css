@@ -88,10 +88,16 @@ hr {
 }
 
 .slider-label {
+  fill: #555;
   font-size: 1.2rem;
 }
 
 .tick {
+  font-size: 1.2rem;
+}
+
+.picker-title {
+  fill: #555;
   font-size: 1.2rem;
 }
 
@@ -106,6 +112,41 @@ hr {
   line-height: 1.4;
 }
 
+#choropleth {
+  margin-top: 6px;
+  min-width: 720px;
+  max-height: 480px;
+}
+
+#choropleth .legend-title {
+  font-size: 0.9rem;
+}
+
+#choropleth .legend-label {
+  font-size: 0.9rem;
+}
+
+#choropleth .picker-box {
+  fill: #bedcf4;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+#choropleth .picker-box.active {
+  fill: #3f79b9;
+}
+
+#choropleth .picker-label {
+  font-size: 1rem;
+  fill: #333;
+  pointer-events: none;
+}
+
+#choropleth .picker-label.active {
+  fill: #fff;
+  font-weight: 700;
+}
+
 #sankey-diagram {
   margin-top: 6px;
   min-width: 540px;
@@ -114,29 +155,6 @@ hr {
 
 #sankey-diagram .legend-label {
   font-size: 0.9rem;
-}
-
-#choropleth {
-  margin-top: 6px;
-  min-width: 720px;
-  max-height: 480px;
-}
-
-#choropleth .legend-label {
-  font-size: 0.9rem;
-}
-
-#choropleth .picker-label {
-  font-size: 1rem;
-  fill: #555;
-  cursor: pointer;
-  pointer-events: all;
-  text-transform: uppercase;
-}
-
-#choropleth .picker-label.active {
-  fill: #3F79B9;
-  font-weight: 700;
 }
 
 footer {
