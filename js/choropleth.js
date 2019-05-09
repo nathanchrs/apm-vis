@@ -9,9 +9,9 @@ var distributionMargins = { top: 20, right: 20, bottom: 30, left: 40 },
 
 var yValue = function (d) { return d.APM },
   yScale = d3.scaleLinear().range([height, 0])
-    .domain([70, 100]),
+    .domain([0, 1]),
   yMap = function (d) { return yScale(yValue(d)) },
-  yAxis = d3.axisLeft(yScale);
+  yAxis = d3.axisLeft(yScale).tickSize(0);
 
 var mapSvg = d3.select("#map").append("svg")
   .attr("width", width + mapMargin.left + mapMargin.right)
@@ -34,11 +34,11 @@ var mapTooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 
-var legendText = ["", "87.5", "90", "92.5", "95", "97.5"];
-var legendColors = ["#CCCCFF", "#66CCCC", "#6699CC", "#3366CC", "#333366"];
+var legendText = ["", "60", "65", "70", "75", "80", "85", "90", "95"];
+var legendColors = ["#bbdefb", "#90caf9", "#64b5f6", "#42a5f5", "#2196f3", "#1e88e5", "#1976d2", "#1565c0"];
 var color = d3.scaleThreshold()
-  .domain([87.5, 90, 92.5, 95, 97.5])
-  .range(["#CCCCFF", "#66CCCC", "#6699CC", "#3366CC", "#333366"]);
+  .domain([60, 65, 70, 75, 80, 85, 90, 95])
+  .range(legendColors);
 
 var projection = d3.geoEquirectangular()
   .scale(1050)
@@ -109,7 +109,6 @@ Promise.all(promises)
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Protein (g)");
 
     d3.select(".slider")
       .append("input")
@@ -118,15 +117,26 @@ Promise.all(promises)
       .attr("max", 1998)
       .attr("step", 1)
       .on("input", function () {
-        var year = this.value;
-        updateMapAndDistribution(year, provinces, dataByYear);
+        const year = this.value;
+        const educationLevel = d3.select(".education-level").selectAll("select").property("value");
+        updateMapAndDistribution(year, educationLevel, provinces, dataByYear);
       });
-    updateMapAndDistribution(1996, provinces, dataByYear);
+
+    var picker = d3.select(".education-level").append("select")
+    picker.append("option").text("SD").attr("value", "SD")
+    picker.append("option").text("SMP").attr("value", "SMP")
+    picker.append("option").text("SMA").attr("value", "SMA")
+    picker.on("input", function () {
+      const educationLevel = this.value;
+      const year = d3.select(".slider").selectAll("input").property("value");
+      updateMapAndDistribution(year, educationLevel, provinces, dataByYear);
+    });
+    updateMapAndDistribution(1996, "SD", provinces, dataByYear);
   })
   .catch(error => console.error(error));
 
 
-function updateMapAndDistribution(year, provinces, dataByYear) {
+function updateMapAndDistribution(year, educationLevel, provinces, dataByYear) {
   d3.select(".year").text(year);
 
   // draw map
@@ -144,8 +154,8 @@ function updateMapAndDistribution(year, provinces, dataByYear) {
         .duration(250)
         .style("opacity", 1);
       mapTooltip.html(
-        "<p><strong>" + d.properties.years["$1996"][0].province + "</strong></p>" +
-        "<p>APM: " + d.properties.years["$" + year][0].APM + "%</p>"
+        "<p><strong>" + d.properties.years["$" + year][0].province + "</strong></p>" +
+        "<p>APM: " + d.properties.years["$" + year][0]["APM_" + educationLevel] + "%</p>"
       )
         .style("left", (d3.event.pageX + 15) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
@@ -158,7 +168,7 @@ function updateMapAndDistribution(year, provinces, dataByYear) {
     .style("fill", function (d) {
       const years = d.properties.years;
       if (years) {
-        return color(d.properties.years["$" + year][0].APM)
+        return color(d.properties.years["$" + year][0]["APM_" + educationLevel])
       }
     }).merge(provinceShapes).transition();
 
@@ -166,18 +176,23 @@ function updateMapAndDistribution(year, provinces, dataByYear) {
   var circles = distributionSvg.selectAll(".dot").data([]);
   circles.exit().remove();
 
+  yScale.domain([
+    d3.min(dataByYear["$" + year], function (d) { return d["APM_" + educationLevel] }),
+    d3.max(dataByYear["$" + year], function (d) { return d["APM_" + educationLevel] })
+  ]);
+
   circles = distributionSvg.selectAll(".dot")
     .data(dataByYear["$" + year]).enter()
     .append("circle")
     .attr("class", "dot")
     .attr("r", 7)
-    .attr("cy", yMap)
-    .style("fill", function (d) { return color(d.APM); })
+    .attr("cy", function (d) { return yScale(d["APM_" + educationLevel]) })
+    .style("fill", function (d) { return color(d["APM_" + educationLevel]); })
     .on("mouseover", function (d) {
       distributionTooltip.transition()
         .duration(200)
         .style("opacity", .9);
-      distributionTooltip.html(d.province + "<br>" + d.APM + "%")
+      distributionTooltip.html(d.province + "<br>" + d["APM_" + educationLevel] + "%")
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
     })

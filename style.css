@@ -175,6 +175,10 @@ h2.year {
   shape-rendering: crispEdges;
 }
 
+.axis g text {
+  display: none;
+}
+
 .dot {
   stroke: #000;
 }
