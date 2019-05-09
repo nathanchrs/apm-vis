@@ -79,7 +79,8 @@ function updateChoropleth(topoJsonData, data, year, level) {
     .on('mouseenter', d => {
       d3.select(d3.event.target).attr('stroke', '#222');
       mapTooltip.transition().style('opacity', 0.9);
-      mapTooltip.html(d.properties.province + '<br />APM: ' + getDataPoint(data, year, d.properties.province, level) + '%');
+      mapTooltip.html(d.properties.province + '<br />APM: '
+        + getDataPoint(data, choroplethYearSlider.value(), d.properties.province, choroplethCurrentLevel) + '%');
     })
     .on('mousemove', d => {
       mapTooltip
