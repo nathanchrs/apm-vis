@@ -147,6 +147,11 @@ hr {
   font-weight: 700;
 }
 
+#choropleth .distribution-axis .tick text {
+  fill: #555;
+  font-size: 0.9rem;
+}
+
 #sankey-diagram {
   margin-top: 6px;
   min-width: 540px;

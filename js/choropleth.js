@@ -7,6 +7,16 @@ function getDataPoint(data, year, province, level) {
   return 0;
 }
 
+function getDataList(data, year, level) {
+  if (data.byYear['$' + year]) {
+    return data.byYear['$' + year].map(row => ({
+      province: row.province,
+      value: row[level]
+    }));
+  }
+  return [];
+}
+
 function getDataYears(data) {
   const years = Object.keys(data.byYear).map(x => +x.slice(1));
   years.sort();
@@ -46,6 +56,10 @@ function drawChoropleth(topoJsonData, data, year, level) {
   mapLegendContainer.selectAll('text.legend-label')
     .data(choroplethLegendText);
 
+  // Distribution
+  distributionContainer.append('g')
+    .attr('class', 'distribution-axis');
+
   updateChoropleth(topoJsonData, data, year, level);
 }
 
@@ -59,12 +73,20 @@ function updateChoropleth(topoJsonData, data, year, level) {
   mapPaths.exit().remove();
   const mapPathsEnter = mapPaths.enter()
     .append('path')
-      .attr('class', 'province')
+      .classed('province', true)
+      .attr('stroke-width', 2)
     .on('mouseenter', d => {
-      d3.select(d3.event.target).attr('stroke', '#222');
+      d3.select(d3.event.target).attr('stroke', '#222').raise();
       mapTooltip.transition().style('opacity', 0.9);
       mapTooltip.html(d.properties.province + '<br />APM: '
-        + getDataPoint(data, choroplethYearSlider.value(), d.properties.province, choroplethCurrentLevel) + '%');
+      + getDataPoint(data, choroplethYearSlider.value(), d.properties.province, choroplethCurrentLevel) + '%');
+
+      distributionContainer.selectAll('circle')
+        .each(function (circleData) {
+          if (circleData.province === d.properties.province) {
+            d3.select(this).attr('stroke', '#222').raise();
+          }
+        });
     })
     .on('mousemove', d => {
       mapTooltip
@@ -74,6 +96,9 @@ function updateChoropleth(topoJsonData, data, year, level) {
     .on('mouseleave', d => {
       d3.select(d3.event.target).attr('stroke', '');
       mapTooltip.transition().style('opacity', 0);
+
+      distributionContainer.selectAll('circle')
+        .attr('stroke', '');
     });
 
   mapPathsEnter.merge(mapPaths)
@@ -162,6 +187,58 @@ function updateChoropleth(topoJsonData, data, year, level) {
   };
   d3.select('.apm-level-description')
     .text(apmLevelDescriptions[choroplethCurrentLevel]);
+
+  // Distribution
+  const distributionLevelDomains = {
+    'sd': [70, 100],
+    'smp': [40, 90],
+    'sma': [25, 75]
+  };
+  const distributionScale = d3.scaleLinear()
+    .range([360, 0])
+    .domain(distributionLevelDomains[level]);
+  const distributionAxis = d3.axisLeft(distributionScale).tickSize(5);
+
+  choroplethSvg.select('.distribution-axis')
+    .call(distributionAxis);
+
+  const distributionCircles = distributionContainer.selectAll('circle')
+    .data(getDataList(data, year, level), d => d.province);
+
+  distributionCircles.exit().remove();
+  const distributionCirclesEnter = distributionCircles.enter()
+    .append('circle')
+      .classed('legend-label', true)
+      .attr('r', 7)
+      .attr('stroke-width', 2)
+    .on('mouseenter', d => {
+      d3.select(d3.event.target).attr('stroke', '#222').raise();
+      mapTooltip.transition().style('opacity', 0.9);
+      mapTooltip.html(d.province + '<br />APM: ' + d.value + '%');
+
+      mapContainer.selectAll('path.province')
+        .each(function (pathData) {
+          if (pathData.properties.province === d.province) {
+            d3.select(this).attr('stroke', '#222').raise();
+          }
+        });
+    })
+    .on('mousemove', d => {
+      mapTooltip
+        .style('left', (d3.event.pageX) + 'px')
+        .style('top', (d3.event.pageY) + 'px');
+    })
+    .on('mouseleave', d => {
+      d3.select(d3.event.target).attr('stroke', '');
+      mapTooltip.transition().style('opacity', 0);
+
+      mapContainer.selectAll('path.province')
+        .attr('stroke', '');
+    });
+  distributionCirclesEnter.merge(distributionCircles)
+    .transition()
+      .attr('cy', d => distributionScale(d.value))
+      .style('fill', d => choroplethColorScale(d.value));
 }
 
 // Setup projection
@@ -180,7 +257,7 @@ const choroplethColorScale = d3.scaleThreshold()
 
 // Setup container SVG
 const choroplethSvg = d3.select('#choropleth')
-  .attr('viewBox', '0 0 1200 460');
+  .attr('viewBox', '0 0 900 460');
 
 const mapContainer = choroplethSvg.append('g')
   .classed('map', true);
@@ -196,7 +273,7 @@ const pickerContainer = choroplethSvg.append('g')
   .attr('transform', 'translate(130, 360)');
 
 const distributionContainer = choroplethSvg.append('g')
-  .attr('transform', 'translate(720, 0)');
+  .attr('transform', 'translate(880, 20)');
 
 // Setup tooltips
 const mapTooltip = d3.select('body').append('div')
