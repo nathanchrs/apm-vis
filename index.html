@@ -24,8 +24,9 @@
 
   <section class="story intro">
     <div class="story-text">
-      Pendidikan di Indonesia masih merupakan salah satu masalah yang terus dihadapi bangsa ini.
-      ...
+      Berbagai aspek pendidikan di Indonesia masih harus terus ditingkatkan.<br />
+      Visualisasi ini menampilkan kondisi pendidikan di Indonesia melalui beberapa ukuran data, <br />
+      khususnya yang terkait dengan tingkat partisipasi siswa dalam pendidikan.
     </div>
   </section>
 
@@ -54,11 +55,11 @@
   <section class="story">
     <h2>Faktor-Faktor yang Mempengaruhi Tingkat Partisipasi Pendidikan</h2>
     <p class="description">
-      Salah satu ukuran tingkat partisipasi pendidikan adalah angka partisipasi pendidikan murni (APM).<br />
-      APM untuk jenjang SD adalah persentase anak usia 7-12 tahun
-      yang mengikuti sekolah dasar.<br />
-      Peta ini menunjukkan persebaran APM per provinsi di Indonesia.
+      Ada banyak faktor yang dapat mempengaruhi tingkat partisipasi pendidikan.<br />
+      Kumpulan <i>scatter plot</i> di bawah ini menampilkan korelasi antara faktor-faktor tersebut (sumbu X) dengan nilai APM (sumbu Y).<br />
+      Tiap titik merupakan satu poin data dari satu tahun. Titik berwarna merah adalah data untuk jenjang SD, biru untuk SMP, dan abu-abu untuk SMA.
     </p>
+    <div class="factors-plot"></div>
   </section>
 
   <footer>
@@ -84,11 +85,12 @@
   </footer>
 
   <script src="node_modules/d3/dist/d3.min.js"></script>
-  <script src="d3-sankey-align-top.js"></script>
   <script src="node_modules/d3-simple-slider/dist/d3-simple-slider.min.js"></script>
   <script src="node_modules/topojson/dist/topojson.min.js"></script>
-  <script src="js/sankey.js"></script>
   <script src="js/choropleth.js"></script>
+  <script src="d3-sankey-align-top.js"></script>
+  <script src="js/sankey.js"></script>
+  <script src='js/factors.js'></script>
 </body>
 
 </html>
