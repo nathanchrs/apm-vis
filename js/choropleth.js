@@ -29,12 +29,21 @@ function drawChoropleth(topoJsonData, data, year, level) {
 
   sliderContainer.call(choroplethYearSlider);
   sliderContainer.append('text')
-    .attr('fill', '#555')
     .attr('transform', 'translate(-20, -20)')
     .classed('slider-label', true);
 
+  // Level picker
+  pickerContainer.append('text')
+    .classed('picker-title', true)
+    .text('Jenjang:');
+
   // Legend
-  const legendLabels = mapLegendContainer.selectAll('text')
+  mapLegendContainer.append('text')
+    .attr('fill', '#888')
+    .attr('transform', 'translate(-6, -20)')
+    .classed('legend-title', true)
+    .text('Angka Partisipasi Murni (APM)');
+  mapLegendContainer.selectAll('text.legend-label')
     .data(choroplethLegendText);
 
   updateChoropleth(topoJsonData, data, year, level);
@@ -101,7 +110,7 @@ function updateChoropleth(topoJsonData, data, year, level) {
     .attr('x', (d, i) => i * 30)
     .style("fill", d => d);
 
-  const legendLabels = mapLegendContainer.selectAll('text')
+  const legendLabels = mapLegendContainer.selectAll('text.legend-label')
     .data(choroplethLegendText);
 
   legendLabels.exit().remove();
@@ -120,24 +129,54 @@ function updateChoropleth(topoJsonData, data, year, level) {
   choroplethSvg.select('.slider-label').text('Tahun: ' + year);
 
   // Level picker
-  const pickerLabels = pickerContainer.selectAll('text')
-    .data(['sd', 'smp', 'sma']);
+  const pickerOptions = ['sd', 'smp', 'sma'];
+  const pickerOptionLabels = {
+    'sd': 'SD',
+    'smp': 'SMP',
+    'sma': 'SMA'
+  };
+
+  const pickerBoxes = pickerContainer.selectAll('rect')
+    .data(pickerOptions);
+
+  pickerBoxes.exit().remove();
+  const pickerBoxesEnter = pickerBoxes.enter()
+    .append('rect')
+      .classed('picker-box', true)
+      .attr('y', -19)
+      .attr('width', 40)
+      .attr('height', 24)
+      .on('click', d => {
+        updateChoropleth(topoJsonData, data, choroplethYearSlider.value(), d);
+      });
+  pickerBoxesEnter.merge(pickerBoxes)
+    .classed('active', d => d === level)
+    .attr('x', (d, i) => i * 44 + 75);
+
+  const pickerLabels = pickerContainer.selectAll('text.picker-label')
+    .data(pickerOptions);
 
   pickerLabels.exit().remove();
   const pickerLabelsEnter = pickerLabels.enter()
     .append('text')
-    .classed('picker-label', true)
-    .attr('y', 0)
-    .style('text-anchor', 'middle')
-    .on('click', d => {
-      updateChoropleth(topoJsonData, data, choroplethYearSlider.value(), d);
-    });
+      .classed('picker-label', true)
+      .attr('y', -2)
+      .style('text-anchor', 'middle');
+
   pickerLabelsEnter.merge(pickerLabels)
     .classed('active', d => d === level)
-    .attr('x', (d, i) => i * 40)
-    .text(d => d);
+    .attr('x', (d, i) => i * 44 + 95)
+    .text(d => pickerOptionLabels[d]);
 
   choroplethCurrentLevel = level;
+
+  const apmLevelDescriptions = {
+    'sd': 'APM untuk jenjang SD adalah persentase anak usia 7-12 tahun yang mengikuti sekolah dasar',
+    'smp': 'APM untuk jenjang SMP adalah persentase anak usia 13-15 tahun yang mengikuti sekolah menengah pertama',
+    'sma': 'APM untuk jenjang SMA adalah persentase anak usia 16-18 tahun yang mengikuti sekolah menengah atas atau sekolah menengah kejuruan'
+  };
+  d3.select('.apm-level-description')
+    .text(apmLevelDescriptions[choroplethCurrentLevel]);
 }
 
 // Setup projection
@@ -169,7 +208,7 @@ const sliderContainer = choroplethSvg.append('g')
   .attr('transform', 'translate(20, 380)');
 
 const pickerContainer = choroplethSvg.append('g')
-  .attr('transform', 'translate(140, 360)');
+  .attr('transform', 'translate(130, 360)');
 
 const distributionContainer = choroplethSvg.append('g')
   .attr('transform', 'translate(720, 0)');
