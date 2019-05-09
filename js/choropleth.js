@@ -51,7 +51,6 @@ function drawChoropleth(topoJsonData, data, year, level) {
 
     updateMapAndDistribution(2003, "SD", provinces, dataByYear);
 */
-  
 }
 
 function updateChoropleth(topoJsonData, data, year, level) {
@@ -228,40 +227,6 @@ Promise.all([
 
 /*
 function updateMapAndDistribution(year, educationLevel, provinces, dataByYear) {
-  d3.select(".year").text(year);
-
-  // draw map
-  var provinceShapes = mapSvg.selectAll(".county").data([]);
-  provinceShapes.exit().remove();
-
-  provinceShapes = mapSvg.selectAll(".county")
-    .data(provinces.features)
-    .enter()
-    .append("path")
-    .attr("class", "county")
-    .attr("d", path)
-    .on("mouseover", function (d) {
-      mapTooltip.transition()
-        .duration(250)
-        .style("opacity", 1);
-      mapTooltip.html(
-        "<p><strong>" + d.properties.years["$" + year][0].province + "</strong></p>" +
-        "<p>APM: " + d.properties.years["$" + year][0]["APM_" + educationLevel] + "%</p>"
-      )
-        .style("left", (d3.event.pageX + 15) + "px")
-        .style("top", (d3.event.pageY - 28) + "px");
-    })
-    .on("mouseout", function (d) {
-      mapTooltip.transition()
-        .duration(250)
-        .style("opacity", 0);
-    })
-    .style("fill", function (d) {
-      const years = d.properties.years;
-      if (years) {
-        return color(d.properties.years["$" + year][0]["APM_" + educationLevel])
-      }
-    }).merge(provinceShapes).transition();
 
   // draw dots
   var circles = distributionSvg.selectAll(".dot").data([]);
@@ -294,6 +259,4 @@ function updateMapAndDistribution(year, educationLevel, provinces, dataByYear) {
     })
     .merge(circles).transition();
 }
-
-d3.select(self.frameElement).style("height", "685px");
 */
