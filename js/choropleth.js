@@ -82,11 +82,13 @@ function ready(data, us) {
 
   provinceShapes
     .on("mouseover", function (d) {
+      const currentYear = slider.property("value");
       mapTooltip.transition()
         .duration(250)
         .style("opacity", 1);
       mapTooltip.html(
-        "<p><strong>" + d.properties.years["$1996"][0].province + "</strong></p>"
+        "<p><strong>" + d.properties.years["$1996"][0].province + "</strong></p>" +
+        "<p>APM: " + d.properties.years["$" + currentYear][0].APM + "%</p>"
       )
         .style("left", (d3.event.pageX + 15) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
@@ -138,28 +140,6 @@ function ready(data, us) {
     .style("text-anchor", "end")
     .text("Protein (g)");
 
-  // // draw dots
-  // var dots = newSvg.selectAll(".dot")
-  //   .data(dataByYear)
-  //   .enter().append("circle")
-  //   .attr("class", "dot")
-  //   .attr("r", 7)
-  //   .attr("cy", yMap)
-  //   .style("fill", function (d) { return color(d.APM); })
-  //   .on("mouseover", function (d) {
-  //     newTooltip.transition()
-  //       .duration(200)
-  //       .style("opacity", .9);
-  //     newTooltip.html(d.province + " " + d.APM)
-  //       .style("left", (d3.event.pageX + 5) + "px")
-  //       .style("top", (d3.event.pageY - 28) + "px");
-  //   })
-  //   .on("mouseout", function (d) {
-  //     newTooltip.transition()
-  //       .duration(500)
-  //       .style("opacity", 0);
-  //   });
-
   function update(year) {
     slider.property("value", year);
     d3.select(".year").text(year);
@@ -171,10 +151,10 @@ function ready(data, us) {
     });
 
     // draw dots
-    var circles = distributionSvg.selectAll(".dot")
-      .data(dataByYear["$" + year]);
-
+    var circles = distributionSvg.selectAll(".dot").data([]);
     circles.exit().remove();
+
+    circles = distributionSvg.selectAll(".dot").data(dataByYear["$" + year]);
 
     circles.enter()
       .append("circle")
