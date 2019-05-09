@@ -118,10 +118,22 @@ function drawSankey(rawData, year) {
     .attr('transform', 'translate(0, 300)');
 
   const years = rawData.map(row => row.year);
+
+  let ticks = [];
+  if (years.length > 8) { // If ticks are too close, skip every other tick
+    for (let i = 0; i < years.length; i++) {
+      if ((i === 0) || (years[i] - ticks[ticks.length - 1] > 1)) {
+        ticks.push(years[i]);
+      }
+    }
+  } else {
+    ticks = years;
+  }
+
   sankeyYearSlider
     .min(years[0])
     .max(years[years.length - 1])
-    .tickValues(years)
+    .tickValues(ticks)
     .marks(years)
     .on('onchange', newYear => {
       updateSankey(rawData, newYear);
@@ -164,7 +176,7 @@ function updateSankey(rawData, year) {
         sankeySvg.selectAll('.link').transition().attr('opacity', 0.5);
         d3.select(d3.event.target).transition().attr('opacity', 1);
         sankeyTooltip.transition().style('opacity', 0.9);
-        sankeyTooltip.html(d.description + '<br />' + d.value + '% siswa');
+        sankeyTooltip.html(d.description + '<br />' + d3.format(",.1f")(d.value) + '% siswa');
       })
       .on('mousemove', d => {
         sankeyTooltip
@@ -212,8 +224,8 @@ function updateSankey(rawData, year) {
         .classed('node-label', true)
       .merge(nodeLabels)
         .html(d => d.isLevel
-          ? ('<tspan class="bold">' + d.title + '</tspan> <tspan class="">(' + d.value + '%)</tspan>')
-          : ('<tspan x="0" dy="1.2em" class="">' + d.title + '</tspan><tspan x="0" dy="1.2em" class="bold">' + d.value + '%</tspan>'))
+          ? ('<tspan class="bold">' + d.title + '</tspan> <tspan class="">(' + d3.format(",.1f")(d.value) + '%)</tspan>')
+          : ('<tspan x="0" dy="1.2em" class="">' + d.title + '</tspan><tspan x="0" dy="1.2em" class="bold">' + d3.format(",.1f")(d.value) + '%</tspan>'))
 
   updatedLabels.transition()
     .attr('transform', d => 'translate(' + (d.isLevel ? d.x0 : d.x1 + 6) + ', 0)')
