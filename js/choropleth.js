@@ -6,7 +6,6 @@ function getDataPoint(data, year, province, level) {
 }
 
 function getDataYears(data) {
-  console.log(data);
   const years = Object.keys(data.byYear).map(x => +x.slice(1));
   years.sort();
   return years;
@@ -14,6 +13,7 @@ function getDataYears(data) {
 
 function drawChoropleth(topoJsonData, data, year, level) {
 
+  // Year slider
   const years = getDataYears(data);
   choroplethYearSlider
     .min(years[0])
@@ -30,6 +30,10 @@ function drawChoropleth(topoJsonData, data, year, level) {
     .attr('transform', 'translate(-20, -20)')
     .classed('slider-label', true);
 
+  // Legend
+  const legendLabels = mapLegendContainer.selectAll('text')
+    .data(choroplethLegendText);
+
   updateChoropleth(topoJsonData, data, year, level);
 
 /*
@@ -45,16 +49,6 @@ function drawChoropleth(topoJsonData, data, year, level) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
 
-
-    var picker = d3.select(".education-level").append("select")
-    picker.append("option").text("SD").attr("value", "SD")
-    picker.append("option").text("SMP").attr("value", "SMP")
-    picker.append("option").text("SMA").attr("value", "SMA")
-    picker.on("input", function () {
-      const educationLevel = this.value;
-      const year = d3.select(".slider").selectAll("input").property("value");
-      updateMapAndDistribution(year, educationLevel, provinces, dataByYear);
-    });
     updateMapAndDistribution(2003, "SD", provinces, dataByYear);
 */
   
@@ -121,7 +115,26 @@ function updateChoropleth(topoJsonData, data, year, level) {
 
   // Slider
   choroplethYearSlider.silentValue(year);
-  choroplethSvg.select('.slider-label').text('Tahun ' + year);
+  choroplethSvg.select('.slider-label').text('Tahun: ' + year);
+
+  // Level picker
+  const pickerLabels = pickerContainer.selectAll('text')
+    .data(['sd', 'smp', 'sma']);
+
+  pickerLabels.exit().remove();
+  const pickerLabelsEnter = pickerLabels.enter()
+    .append('text')
+    .classed('picker-label', true)
+    .attr('y', 0)
+    .style('text-anchor', 'middle')
+    .on('click', d => {
+      console.log(d);
+      updateChoropleth(topoJsonData, data, year, d);
+    });
+  pickerLabelsEnter.merge(pickerLabels)
+    .classed('active', d => d === level)
+    .attr('x', (d, i) => i * 40)
+    .text(d => d);
 }
 
 // Setup projection
@@ -151,6 +164,9 @@ const mapLegendContainer = choroplethSvg.append('g')
 
 const sliderContainer = choroplethSvg.append('g')
   .attr('transform', 'translate(20, 380)');
+
+const pickerContainer = choroplethSvg.append('g')
+  .attr('transform', 'translate(140, 360)');
 
 const distributionContainer = choroplethSvg.append('g')
   .attr('transform', 'translate(720, 0)');
@@ -205,7 +221,8 @@ Promise.all([
 
     const years = getDataYears(indexedData);
     const initialYear = years[years.length - 1];
-    drawChoropleth(topoJsonData, indexedData, initialYear, 'smp');
+    const initialLevel = 'sma';
+    drawChoropleth(topoJsonData, indexedData, initialYear, initialLevel);
   })
   .catch(err => console.error(err));
 

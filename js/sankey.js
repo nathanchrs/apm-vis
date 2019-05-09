@@ -252,7 +252,7 @@ function updateSankey(rawData, year) {
       .html(d => categories[d]);
 
   sankeyYearSlider.silentValue(year);
-  sankeySvg.select('.slider-label').text('Angkatan ' + year)
+  sankeySvg.select('.slider-label').text('Angkatan: ' + year)
     .append('title')
     .text('Siswa angkatan ' + year + ' adalah siswa yang masuk kelas 1 SD pada tahun ' + (year - 12))
 }

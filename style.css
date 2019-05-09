@@ -124,6 +124,19 @@ hr {
   font-size: 0.9rem;
 }
 
+#choropleth .picker-label {
+  font-size: 1rem;
+  fill: #555;
+  cursor: pointer;
+  pointer-events: all;
+  text-transform: uppercase;
+}
+
+#choropleth .picker-label.active {
+  fill: #3F79B9;
+  font-weight: 700;
+}
+
 footer {
   color: #333;
   background-color: #eee;
