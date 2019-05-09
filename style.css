@@ -85,6 +85,25 @@ hr {
   border: solid 1px #ddd;
 }
 
+.slider-label {
+  font-size: 1.2rem;
+}
+
+.tick {
+  font-size: 1.2rem;
+}
+
+.tooltip {
+  pointer-events: none;
+  position: absolute;
+  z-index: 9999;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  line-height: 1.4;
+}
+
 #sankey-diagram {
   margin-top: 6px;
   min-width: 540px;
@@ -95,22 +114,27 @@ hr {
   font-size: 0.9rem;
 }
 
-#sankey-diagram .slider-label {
-  font-size: 1.2rem;
+#choropleth {
+  margin-top: 6px;
+  min-width: 720px;
+  max-height: 480px;
 }
 
-#sankey-diagram .tick {
-  font-size: 1.2rem;
+#choropleth .legend-label {
+  font-size: 0.9rem;
 }
 
-#sankey-tooltip {
-  pointer-events: none;
-  position: absolute;
-  z-index: 9999;
-  background-color: #fff;
-  padding: 12px;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  line-height: 1.3;
+#choropleth .picker-label {
+  font-size: 1rem;
+  fill: #555;
+  cursor: pointer;
+  pointer-events: all;
+  text-transform: uppercase;
+}
+
+#choropleth .picker-label.active {
+  fill: #3F79B9;
+  font-weight: 700;
 }
 
 footer {
@@ -131,46 +155,104 @@ footer p {
   margin-bottom: 24px;
 }
 
+
 svg {
-    font: 10px sans-serif;
-    padding: 10px;
-  }
-  
-  .axis,
-  .frame {
-    shape-rendering: crispEdges;
-  }
-  
-  .axis line {
-    stroke: #ddd;
-  }
-  
-  .axis path {
-    display: none;
-  }
-  
-  .cell text {
-    font-weight: bold;
-    text-transform: capitalize;
-    fill: black;
-  }
-  
-  .frame {
-    fill: none;
-    stroke: #aaa;
-  }
-  
-  circle {
-    fill-opacity: .7;
-  }
-  
-  circle.hidden {
-    fill: #ccc !important;
-  }
-  
-  .extent {
-    fill: #000;
-    fill-opacity: .125;
-    stroke: #fff;
-  }
-  
+  font: 10px sans-serif;
+  padding: 10px;
+}
+
+.axis,
+.frame {
+  shape-rendering: crispEdges;
+}
+
+.axis line {
+  stroke: #ddd;
+}
+
+.axis path {
+  display: none;
+}
+
+.cell text {
+  font-weight: bold;
+  text-transform: capitalize;
+  fill: black;
+}
+
+.frame {
+  fill: none;
+  stroke: #aaa;
+}
+
+circle {
+  fill-opacity: .7;
+}
+
+circle.hidden {
+  fill: #ccc !important;
+}
+
+.extent {
+  fill: #000;
+  fill-opacity: .125;
+  stroke: #fff;
+}
+
+/*
+#map {
+  margin: 10px 0px 0px 0px;
+  padding: 0px;
+}
+
+h2.year {
+  margin: 10px 0px 0px 0px;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.county {
+  fill: #fff;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+#legend text {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: 400;
+}
+
+.wide {
+  width: 140px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  padding: 1.5rem;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis g text {
+  display: none;
+}
+
+.dot {
+  stroke: #000;
+}
+*/
+

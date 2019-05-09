@@ -19,6 +19,7 @@
     "d3": "^5.9.2",
     "d3-simple-slider": "^1.5.0",
     "d3-transition": "^1.2.0",
-    "reset-css": "^4.0.1"
+    "reset-css": "^4.0.1",
+    "topojson": "^3.0.2"
   }
 }
