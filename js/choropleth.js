@@ -49,7 +49,7 @@ var path = d3.geoPath()
   .projection(projection);
 
 var promises = [];
-promises.push(d3.csv("data/indonesia.csv"));
+promises.push(d3.csv("data/apm.csv"));
 promises.push(d3.json("data/indonesia.json"));
 
 Promise.all(promises)
@@ -113,8 +113,8 @@ Promise.all(promises)
     d3.select(".slider")
       .append("input")
       .attr("type", "range")
-      .attr("min", 1996)
-      .attr("max", 1998)
+      .attr("min", 2003)
+      .attr("max", 2017)
       .attr("step", 1)
       .on("input", function () {
         const year = this.value;
@@ -131,7 +131,7 @@ Promise.all(promises)
       const year = d3.select(".slider").selectAll("input").property("value");
       updateMapAndDistribution(year, educationLevel, provinces, dataByYear);
     });
-    updateMapAndDistribution(1996, "SD", provinces, dataByYear);
+    updateMapAndDistribution(2003, "SD", provinces, dataByYear);
   })
   .catch(error => console.error(error));
 
