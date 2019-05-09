@@ -3,8 +3,9 @@
 }
 
 html {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
   line-height: 1.15;
 }
 
@@ -26,14 +27,14 @@ h1 {
   font-family: 'Lora', serif;
   color: #fff;
   font-weight: 700;
-  font-size: 3.6rem;
+  font-size: 4rem;
   margin-bottom: 12px;
 }
 
 .subtitle {
   font-family: 'Lora', serif;
   color: #fff;
-  font-size: 2rem;
+  font-size: 2.6rem;
   font-style: italic;
 }
 
@@ -43,12 +44,13 @@ section.story {
 
 section.story.intro {
   background-color: #eee;
+  font-size: 1.2rem;
 }
 
 h2 {
   font-family: 'Lora', serif;
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 2.4rem;
   line-height: 1.3;
   margin-bottom: 12px;
 }
@@ -75,19 +77,46 @@ p {
   margin-bottom: 24px;
 }
 
+i {
+  font-style: italic;
+}
+
 hr {
   border: solid 1px #ddd;
 }
 
 #sankey-diagram {
-  min-width: 600px;
-  max-height: 500px;
+  margin-top: 6px;
+  min-width: 540px;
+  max-height: 480px;
+}
+
+#sankey-diagram .legend-label {
+  font-size: 0.9rem;
+}
+
+#sankey-diagram .slider-label {
+  font-size: 1.2rem;
+}
+
+#sankey-diagram .tick {
+  font-size: 1.2rem;
+}
+
+#sankey-tooltip {
+  pointer-events: none;
+  position: absolute;
+  z-index: 9999;
+  background-color: #fff;
+  padding: 12px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  line-height: 1.3;
 }
 
 footer {
   color: #333;
   background-color: #eee;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   margin-top: 36px;
   padding: 36px 5% 12px 5%;
 }
