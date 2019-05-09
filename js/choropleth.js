@@ -13,27 +13,6 @@ function getDataYears(data) {
 }
 
 function drawChoropleth(topoJsonData, data, year, level) {
-  /*var legenditem = mapLegendContainer.selectAll(".legenditem")
-    .data(d3.range(6))
-    .enter()
-    .append("g")
-    .attr("class", "legenditem")
-    .attr("transform", function (d, i) { return "translate(" + i * 31 + ",0)"; });
-
-  legenditem.append("rect")
-    .attr("x", width - 240)
-    .attr("y", -7)
-    .attr("width", 30)
-    .attr("height", 6)
-    .attr("class", "rect")
-    .style("fill", function (d, i) { return '#eee'; });
-
-  legenditem.append("text")
-    .attr("x", width - 240)
-    .attr("y", 16)
-    .style("text-anchor", "middle")
-    .text(function (d, i) { return 'aaa'; });
-*/
 
   const years = getDataYears(data);
   choroplethYearSlider
@@ -44,9 +23,6 @@ function drawChoropleth(topoJsonData, data, year, level) {
     .on('onchange', newYear => {
       updateChoropleth(topoJsonData, data, newYear, level);
     });
-
-  const sliderContainer = choroplethSvg.append('g')
-    .attr('transform', 'translate(20, 432)');
 
   sliderContainer.call(choroplethYearSlider);
   sliderContainer.append('text')
@@ -69,17 +45,6 @@ function drawChoropleth(topoJsonData, data, year, level) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
 
-    d3.select(".slider")
-      .append("input")
-      .attr("type", "range")
-      .attr("min", 2003)
-      .attr("max", 2017)
-      .attr("step", 1)
-      .on("input", function () {
-        const year = this.value;
-        const educationLevel = d3.select(".education-level").selectAll("select").property("value");
-        updateMapAndDistribution(year, educationLevel, provinces, dataByYear);
-      });
 
     var picker = d3.select(".education-level").append("select")
     picker.append("option").text("SD").attr("value", "SD")
@@ -98,6 +63,7 @@ function drawChoropleth(topoJsonData, data, year, level) {
 function updateChoropleth(topoJsonData, data, year, level) {
   const geoJsonData = topojson.feature(topoJsonData, topoJsonData.objects.states_provinces);
 
+  // Map
   const mapPaths = mapContainer.selectAll('path')
     .data(geoJsonData.features);
 
@@ -125,6 +91,35 @@ function updateChoropleth(topoJsonData, data, year, level) {
       .attr('d', geoPath)
       .style('fill', d => choroplethColorScale(getDataPoint(data, year, d.properties.province, level)));
 
+  // Legend
+  const legendBoxes = mapLegendContainer.selectAll('rect')
+    .data(choroplethLegendColors);
+
+  legendBoxes.exit().remove();
+  const legendBoxesEnter = legendBoxes.enter()
+    .append('rect')
+      .attr('y', 6)
+      .attr('width', 30)
+      .attr('height', 8);
+  legendBoxesEnter.merge(legendBoxes)
+    .attr('x', (d, i) => i * 30)
+    .style("fill", d => d);
+
+  const legendLabels = mapLegendContainer.selectAll('text')
+    .data(choroplethLegendText);
+
+  legendLabels.exit().remove();
+  const legendLabelsEnter = legendLabels.enter()
+    .append('text')
+    .classed('legend-label', true)
+    .attr('y', 0)
+    .attr('fill', '#888')
+    .style('text-anchor', 'middle')
+  legendLabelsEnter.merge(legendLabels)
+    .attr('x', (d, i) => i * 30)
+    .text(d => d);
+
+  // Slider
   choroplethYearSlider.silentValue(year);
   choroplethSvg.select('.slider-label').text('Tahun ' + year);
 }
@@ -137,27 +132,28 @@ const geoPath = d3.geoPath().projection(
 );
 
 // Setup color scale
-//var legendText = ["", "60", "65", "70", "75", "80", "85", "90", "95"];
-const legendColors = ["#bbdefb", "#90caf9", "#64b5f6", "#42a5f5", "#2196f3", "#1e88e5", "#1976d2", "#1565c0"];
+var choroplethLegendText = ["%", "60", "65", "70", "75", "80", "85", "90", "95"];
+const choroplethLegendColors = ["#bbdefb", "#90caf9", "#64b5f6", "#42a5f5", "#2196f3", "#1e88e5", "#1976d2", "#1565c0"];
 const choroplethColorScale = d3.scaleThreshold()
   .domain([60, 65, 70, 75, 80, 85, 90, 95])
-  .range(legendColors);
+  .range(choroplethLegendColors);
 
 // Setup container SVG
 const choroplethSvg = d3.select('#choropleth')
-  .attr('viewBox', '0 0 1200 480');
+  .attr('viewBox', '0 0 1200 460');
 
 const mapContainer = choroplethSvg.append('g')
   .classed('map', true);
 
 const mapLegendContainer = choroplethSvg.append('g')
   .classed('map-legend', true)
-  .attr('transform', 'translate(480, 0)')
-  .attr('fill', '#eee');
+  .attr('transform', 'translate(10, 300)');
+
+const sliderContainer = choroplethSvg.append('g')
+  .attr('transform', 'translate(20, 380)');
 
 const distributionContainer = choroplethSvg.append('g')
-  .attr('transform', 'translate(720, 0)')
-  .attr('fill', '#eee');
+  .attr('transform', 'translate(720, 0)');
 
 // Setup tooltips
 const mapTooltip = d3.select('body').append('div')
@@ -175,6 +171,7 @@ const choroplethYearSlider = d3
   .width(774)
   .tickFormat(d3.format('d'))
   .displayValue(false);
+
 
 /*
 var yValue = function (d) { return d.APM },
@@ -208,7 +205,7 @@ Promise.all([
 
     const years = getDataYears(indexedData);
     const initialYear = years[years.length - 1];
-    drawChoropleth(topoJsonData, indexedData, initialYear, 'sma');
+    drawChoropleth(topoJsonData, indexedData, initialYear, 'smp');
   })
   .catch(err => console.error(err));
 

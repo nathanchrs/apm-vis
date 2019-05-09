@@ -85,16 +85,6 @@ hr {
   border: solid 1px #ddd;
 }
 
-#sankey-diagram {
-  margin-top: 6px;
-  min-width: 540px;
-  max-height: 480px;
-}
-
-#sankey-diagram .legend-label {
-  font-size: 0.9rem;
-}
-
 .slider-label {
   font-size: 1.2rem;
 }
@@ -114,10 +104,24 @@ hr {
   line-height: 1.4;
 }
 
+#sankey-diagram {
+  margin-top: 6px;
+  min-width: 540px;
+  max-height: 480px;
+}
+
+#sankey-diagram .legend-label {
+  font-size: 0.9rem;
+}
+
 #choropleth {
   margin-top: 6px;
   min-width: 720px;
   max-height: 480px;
+}
+
+#choropleth .legend-label {
+  font-size: 0.9rem;
 }
 
 footer {
