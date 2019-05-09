@@ -1,3 +1,5 @@
+let choroplethCurrentLevel;
+
 function getDataPoint(data, year, province, level) {
   if (data.byYearAndProvince['$' + year] && data.byYearAndProvince['$' + year]['$' + province]) {
     return data.byYearAndProvince['$' + year]['$' + province][0][level];
@@ -12,6 +14,7 @@ function getDataYears(data) {
 }
 
 function drawChoropleth(topoJsonData, data, year, level) {
+  choroplethCurrentLevel = level;
 
   // Year slider
   const years = getDataYears(data);
@@ -21,7 +24,7 @@ function drawChoropleth(topoJsonData, data, year, level) {
     .tickValues(years)
     .marks(years)
     .on('onchange', newYear => {
-      updateChoropleth(topoJsonData, data, newYear, level);
+      updateChoropleth(topoJsonData, data, newYear, choroplethCurrentLevel);
     });
 
   sliderContainer.call(choroplethYearSlider);
@@ -127,13 +130,14 @@ function updateChoropleth(topoJsonData, data, year, level) {
     .attr('y', 0)
     .style('text-anchor', 'middle')
     .on('click', d => {
-      console.log(d);
-      updateChoropleth(topoJsonData, data, year, d);
+      updateChoropleth(topoJsonData, data, choroplethYearSlider.value(), d);
     });
   pickerLabelsEnter.merge(pickerLabels)
     .classed('active', d => d === level)
     .attr('x', (d, i) => i * 40)
     .text(d => d);
+
+  choroplethCurrentLevel = level;
 }
 
 // Setup projection
