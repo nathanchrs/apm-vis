@@ -4,57 +4,57 @@ const categoryColors = {
   'do': '#ffdf9e'
 };
 
-const levels = {
-  'sd': 'SD',
-  'smp': 'SMP',
-  'sma': 'SMA/SMK'
-};
-
-const nextLevelDescription = {
-  'sd': 'SMP',
-  'smp': 'SMA/SMK',
-  'sma': 'perguruan tinggi'
-};
-
 const categories = {
   'lanjut': 'Lanjut ke jenjang berikutnya',
   'tidak-lanjut': 'Tidak lanjut setelah lulus',
   'do': 'Drop out'
 };
 
-const getLinkDescription = function (category, sourceLevel) {
-  if (category === 'lanjut') {
-    return 'Lanjut ke ' + nextLevelDescription[sourceLevel];
-  } else if (category === 'tidak-lanjut') {
-    return 'Tidak lanjut sekolah setelah lulus ' + levels[sourceLevel];
-  } else if (category === 'do') {
-    return 'Drop out dari ' + levels[sourceLevel];
-  } else {
-    return '';
-  }
-}
-
-const buckets = {
-  'lanjut-pt': 'Lanjut ke perguruan tinggi',
-  'tamat-sma': 'Tamat SMA/SMK',
-  'tamat-smp': 'Tamat SMP',
-  'tamat-sd': 'Tamat SD',
-  'tidak-lulus-sd': 'Tidak lulus SD'
-};
-
-const targetMap = {
-  'sma:lanjut': 'lanjut-pt',
-  'sma:tidak-lanjut': 'tamat-sma',
-  'sma:do': 'tamat-smp',
-  'smp:lanjut': 'sma',
-  'smp:tidak-lanjut': 'tamat-smp',
-  'smp:do': 'tamat-sd',
-  'sd:lanjut': 'smp',
-  'sd:tidak-lanjut': 'tamat-sd',
-  'sd:do': 'tidak-lulus-sd'
-};
-
 function transformSankeyData(rawData, year) {
+
+  const levels = {
+    'sd': 'SD',
+    'smp': 'SMP',
+    'sma': 'SMA/SMK'
+  };
+
+  const nextLevelDescription = {
+    'sd': 'SMP',
+    'smp': 'SMA/SMK',
+    'sma': 'perguruan tinggi'
+  };
+
+  const getLinkDescription = function (category, sourceLevel) {
+    if (category === 'lanjut') {
+      return 'Lanjut ke ' + nextLevelDescription[sourceLevel];
+    } else if (category === 'tidak-lanjut') {
+      return 'Tidak lanjut sekolah setelah lulus ' + levels[sourceLevel];
+    } else if (category === 'do') {
+      return 'Drop out dari ' + levels[sourceLevel];
+    } else {
+      return '';
+    }
+  }
+
+  const buckets = {
+    'lanjut-pt': 'Lanjut ke perguruan tinggi',
+    'tamat-sma': 'Tamat SMA/SMK',
+    'tamat-smp': 'Tamat SMP',
+    'tamat-sd': 'Tamat SD',
+    'tidak-lulus-sd': 'Tidak lulus SD'
+  };
+
+  const targetMap = {
+    'sma:lanjut': 'lanjut-pt',
+    'sma:tidak-lanjut': 'tamat-sma',
+    'sma:do': 'tamat-smp',
+    'smp:lanjut': 'sma',
+    'smp:tidak-lanjut': 'tamat-smp',
+    'smp:do': 'tamat-sd',
+    'sd:lanjut': 'smp',
+    'sd:tidak-lanjut': 'tamat-sd',
+    'sd:do': 'tidak-lulus-sd'
+  };
 
   const levelKeys = Object.keys(levels);
   const categoryKeys = Object.keys(categories);
@@ -113,9 +113,12 @@ function drawSankey(rawData, year) {
   sankeySvg.append('g')
     .classed('node-labels', true);
 
+  sankeySvg.append('g')
+    .classed('legend', true)
+    .attr('transform', 'translate(0, 300)');
 
   const years = rawData.map(row => row.year);
-  yearSlider
+  sankeyYearSlider
     .min(years[0])
     .max(years[years.length - 1])
     .tickValues(years)
@@ -124,18 +127,14 @@ function drawSankey(rawData, year) {
       updateSankey(rawData, newYear);
     });
 
-  sankeySvg.append('g')
-    .classed('legend', true)
-    .attr('transform', 'translate(0, 300)');
-
   const sliderContainer = sankeySvg.append('g')
     .attr('transform', 'translate(20, 432)');
 
-  sliderContainer.call(yearSlider);
+  sliderContainer.call(sankeyYearSlider);
   sliderContainer.append('text')
     .attr('fill', '#555')
     .attr('transform', 'translate(-20, -20)')
-    .classed('slider-label', true)
+    .classed('slider-label', true);
 
   updateSankey(rawData, year);
 }
@@ -252,8 +251,8 @@ function updateSankey(rawData, year) {
       .attr('y', (d, i) => i * 22 + 12)
       .html(d => categories[d]);
 
-  yearSlider.silentValue(year);
-  sankeySvg.select('.slider-label').text('Angkatan ' + year)
+  sankeyYearSlider.silentValue(year);
+  sankeySvg.select('.slider-label').text('Angkatan: ' + year)
     .append('title')
     .text('Siswa angkatan ' + year + ' adalah siswa yang masuk kelas 1 SD pada tahun ' + (year - 12))
 }
@@ -272,18 +271,18 @@ const sankeySvg = d3.select('#sankey-diagram')
   .attr('viewBox', '0 0 720 480');
 
 // Setup tooltip
-var sankeyTooltip = d3.select('body').append('div')
+const sankeyTooltip = d3.select('body').append('div')
   .attr('id', 'sankey-tooltip')
   .attr('class', 'tooltip')
   .style("opacity", 0);
 
-const yearSlider = d3
+const sankeyYearSlider = d3
   .sliderHorizontal()
   .width(444)
   .tickFormat(d3.format('d'))
   .displayValue(false);
 
-d3.csv('sankey.csv', d3.autoType)
+d3.csv('data/sankey.csv', d3.autoType)
   .then(function (rawData) {
     if (rawData && rawData.length) {
       rawData.sort((a, b) => a.year - b.year);
