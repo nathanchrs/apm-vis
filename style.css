@@ -96,11 +96,6 @@ hr {
   font-size: 1.2rem;
 }
 
-#choropleth .distribution-axis .tick text {
-  fill: #555;
-  font-size: 0.9rem;
-}
-
 .picker-title {
   fill: #555;
   font-size: 1.2rem;
@@ -223,61 +218,3 @@ circle.hidden {
   fill-opacity: .125;
   stroke: #fff;
 }
-
-/*
-#map {
-  margin: 10px 0px 0px 0px;
-  padding: 0px;
-}
-
-h2.year {
-  margin: 10px 0px 0px 0px;
-  font-size: 1.3em;
-  font-weight: 700;
-}
-
-.county {
-  fill: #fff;
-}
-
-.states {
-  fill: none;
-  stroke: #fff;
-  stroke-linejoin: round;
-}
-
-#legend text {
-  font-size: 0.9em;
-  color: #333;
-  font-weight: 400;
-}
-
-.wide {
-  width: 140px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.col {
-  padding: 1.5rem;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.axis g text {
-  display: none;
-}
-
-.dot {
-  stroke: #000;
-}
-*/
-
