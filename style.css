@@ -96,6 +96,11 @@ hr {
   font-size: 1.2rem;
 }
 
+#choropleth .distribution-axis .tick text {
+  fill: #555;
+  font-size: 0.9rem;
+}
+
 .picker-title {
   fill: #555;
   font-size: 1.2rem;
