@@ -39,6 +39,8 @@
       yang mengikuti sekolah dasar.<br />
       Peta ini menunjukkan persebaran APM per provinsi di Indonesia.
     </p>
+    <svg id="choropleth" class="DEBUG"></svg>
+<!--
     <div id="content" class="row">
       <div class="col">
         <div id="map"></div>
@@ -51,6 +53,7 @@
         <div id="distribution"></div>
       </div>
     </div>
+-->
   </section>
 
   <section class="story">
@@ -59,7 +62,7 @@
       Diagram ini mendeskripsikan suatu angkatan siswa yang masuk kelas 1 SD di tahun yang sama.<br />
       Dari 100% siswa yang mulai bersekolah, banyak yang tidak melanjutkan ke jenjang berikutnya atau bahkan <i>drop out</i>.
     </p>
-    <svg id="sankey-diagram"></svg>
+    <svg id="sankey-diagram" class="DEBUG"></svg>
   </section>
 
   <section class="story">
@@ -98,7 +101,7 @@
   <script src="d3-sankey-align-top.js"></script>
   <script src="node_modules/d3-simple-slider/dist/d3-simple-slider.min.js"></script>
   <script src="node_modules/topojson/dist/topojson.min.js"></script>
-  <script src="main.js"></script>
+  <script src="js/sankey.js"></script>
   <script src="js/choropleth.js"></script>
 </body>
 
