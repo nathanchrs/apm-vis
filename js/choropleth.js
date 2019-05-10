@@ -53,8 +53,6 @@ function drawChoropleth(topoJsonData, data, year, level) {
     .attr('transform', 'translate(-6, -20)')
     .classed('legend-title', true)
     .text('Angka Partisipasi Murni (APM)');
-  mapLegendContainer.selectAll('text.legend-label')
-    .data(choroplethLegendText);
 
   // Distribution
   distributionContainer.append('g')
@@ -76,7 +74,7 @@ function updateChoropleth(topoJsonData, data, year, level) {
       .classed('province', true)
       .attr('stroke-width', 2)
     .on('mouseenter', d => {
-      d3.select(d3.event.target).attr('stroke', '#222').raise();
+      d3.select(d3.event.target).attr('stroke', '#e12').raise();
       mapTooltip.transition().style('opacity', 0.9);
       mapTooltip.html(d.properties.province + '<br />APM: '
       + getDataPoint(data, choroplethYearSlider.value(), d.properties.province, choroplethCurrentLevel) + '%');
@@ -84,7 +82,7 @@ function updateChoropleth(topoJsonData, data, year, level) {
       distributionContainer.selectAll('circle')
         .each(function (circleData) {
           if (circleData.province === d.properties.province) {
-            d3.select(this).attr('stroke', '#222').raise();
+            d3.select(this).attr('stroke', '#e12').raise();
           }
         });
     })
@@ -210,18 +208,18 @@ function updateChoropleth(topoJsonData, data, year, level) {
   distributionCircles.exit().remove();
   const distributionCirclesEnter = distributionCircles.enter()
     .append('circle')
-      .classed('legend-label', true)
+      .classed('distribution-circle', true)
       .attr('r', 7)
       .attr('stroke-width', 2)
     .on('mouseenter', d => {
-      d3.select(d3.event.target).attr('stroke', '#222').raise();
+      d3.select(d3.event.target).attr('stroke', '#e12').raise();
       mapTooltip.transition().style('opacity', 0.9);
       mapTooltip.html(d.province + '<br />APM: ' + d.value + '%');
 
       mapContainer.selectAll('path.province')
         .each(function (pathData) {
           if (pathData.properties.province === d.province) {
-            d3.select(this).attr('stroke', '#222').raise();
+            d3.select(this).attr('stroke', '#e12').raise();
           }
         });
     })
@@ -253,7 +251,7 @@ const geoPath = d3.geoPath().projection(
 // Setup color scale
 const choroplethDomain = [0.01, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
 const choroplethLegendText = ['%'].concat(choroplethDomain.map(x => d3.format('d')(x)));
-const choroplethLegendColors = ["#eaeaea", "#b3ddcc", "#8acdce", "#62bed2", "#46aace", "#3d91be", "#3577ae", "#2d5e9e", "#24448e", "#1c2b7f", "#162065", "11174b"];
+const choroplethLegendColors = ["#eaeaea", "#b3ddcc", "#8acdce", "#62bed2", "#46aace", "#3d91be", "#3577ae", "#2d5e9e", "#24448e", "#1c2b7f", "#162065", "#1a0533"];
 const choroplethColorScale = d3.scaleThreshold()
   .domain(choroplethDomain)
   .range(choroplethLegendColors);
