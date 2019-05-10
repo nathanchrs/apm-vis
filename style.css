@@ -127,13 +127,17 @@ hr {
 }
 
 #choropleth .picker-box {
-  fill: #bedcf4;
+  fill: #ddd;
   cursor: pointer;
   pointer-events: all;
+  stroke: #ccc;
+  stroke-width: 3;
+  stroke-dasharray: 0, 64, 40, 0;
 }
 
 #choropleth .picker-box.active {
-  fill: #3f79b9;
+  fill: #555;
+  stroke-width: 0;
 }
 
 #choropleth .picker-label {

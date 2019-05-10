@@ -161,6 +161,7 @@ function updateChoropleth(topoJsonData, data, year, level) {
       });
   pickerBoxesEnter.merge(pickerBoxes)
     .classed('active', d => d === level)
+    .attr('transform', d => d === level ? 'translate(0, 1.6)' : '')
     .attr('x', (d, i) => i * 44 + 75);
 
   const pickerLabels = pickerContainer.selectAll('text.picker-label')
@@ -175,6 +176,7 @@ function updateChoropleth(topoJsonData, data, year, level) {
 
   pickerLabelsEnter.merge(pickerLabels)
     .classed('active', d => d === level)
+    .attr('transform', d => d === level ? 'translate(0, 1.3)' : '')
     .attr('x', (d, i) => i * 44 + 95)
     .text(d => pickerOptionLabels[d]);
 
@@ -249,10 +251,11 @@ const geoPath = d3.geoPath().projection(
 );
 
 // Setup color scale
-var choroplethLegendText = ["%", "60", "65", "70", "75", "80", "85", "90", "95"];
-const choroplethLegendColors = ["#bbdefb", "#90caf9", "#64b5f6", "#42a5f5", "#2196f3", "#1e88e5", "#1976d2", "#1565c0"];
+const choroplethDomain = [0.01, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
+const choroplethLegendText = ['%'].concat(choroplethDomain.map(x => d3.format('d')(x)));
+const choroplethLegendColors = ["#eaeaea", "#b3ddcc", "#8acdce", "#62bed2", "#46aace", "#3d91be", "#3577ae", "#2d5e9e", "#24448e", "#1c2b7f", "#162065", "11174b"];
 const choroplethColorScale = d3.scaleThreshold()
-  .domain([60, 65, 70, 75, 80, 85, 90, 95])
+  .domain(choroplethDomain)
   .range(choroplethLegendColors);
 
 // Setup container SVG
