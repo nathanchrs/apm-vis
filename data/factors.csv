@@ -1,4 +1,4 @@
-year,level,school_count,student_count,pns_teacher_count,nonpns_teacher_count,teacher_count,class_count,apm
+Tahun,Tingkat,Jumlah Sekolah,Jumlah Siswa,Jumlah Guru PNS,Jumlah Guru Non-PNS,Jumlah Guru,Jumlah Kelas,APM
 2012,sd,146826,27583919,1074701,475575,1550276,1060597,95.55
 2013,sd,148272,26769680,1051671,630592,1682263,1032818,95.71
 2015,sd,147513,26132141,1163184,679678,1842862,1096930,93.53

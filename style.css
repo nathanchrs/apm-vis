@@ -96,11 +96,6 @@ hr {
   font-size: 1.2rem;
 }
 
-#choropleth .distribution-axis .tick text {
-  fill: #555;
-  font-size: 0.9rem;
-}
-
 .picker-title {
   fill: #555;
   font-size: 1.2rem;
@@ -200,8 +195,9 @@ footer p {
 }
 
 .cell text {
-  font-weight: bold;
-  text-transform: capitalize;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
   fill: black;
 }
 
