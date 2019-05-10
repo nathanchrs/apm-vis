@@ -147,6 +147,11 @@ hr {
   font-weight: 700;
 }
 
+#choropleth .distribution-axis .tick text {
+  fill: #555;
+  font-size: 0.9rem;
+}
+
 #sankey-diagram {
   margin-top: 6px;
   min-width: 540px;
@@ -174,7 +179,6 @@ footer h4 {
 footer p {
   margin-bottom: 24px;
 }
-
 
 .factors-plot svg, .factors-plot text {
   font: 10px sans-serif;

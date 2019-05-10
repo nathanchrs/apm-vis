@@ -123,7 +123,7 @@ d3.csv("data/factors.csv")
     // Clear the previously-active brush, if any.
     function brushstart(p) {
         if (brushCell !== this) {
-        d3.select(brushCell).call(brush.move, null);
+        d.select(brushCell).call(brush.move, null);
         brushCell = this;
         x.domain(domainByFactors[p.x]);
         y.domain(factors_apm_data);
