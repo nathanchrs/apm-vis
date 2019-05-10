@@ -2,6 +2,19 @@
   border: solid 1px #DEDEDE;
 }
 
+.version-notice {
+  z-index: 99999;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 16px;
+  line-height: 1.4;
+  background-color: #fff;
+  border-bottom: solid 4px #e12;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
 html {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;

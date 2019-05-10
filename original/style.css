@@ -1,0 +1,260 @@
+.DEBUG {
+  border: solid 1px #DEDEDE;
+}
+
+html {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+section.cover {
+  height: 60vh;
+  background-color: #444;
+  background-image: url('students-background-dark.jpg');
+  background-size: cover;
+  position: relative;
+}
+
+section.cover .title-container {
+  position: absolute;
+  left: 5%;
+  bottom: 10%;
+}
+
+h1 {
+  font-family: 'Lora', serif;
+  color: #fff;
+  font-weight: 700;
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-family: 'Lora', serif;
+  color: #fff;
+  font-size: 2.6rem;
+  font-style: italic;
+}
+
+section.story {
+  padding: 36px 5% 0 5%;
+}
+
+section.story.intro {
+  padding: 36px 5%;
+  background-color: #eee;
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+h2 {
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+a {
+  color: inherit;
+  position: relative;
+  z-index: 0;
+  text-decoration: none;
+  background-color: transparent;
+  background-image: linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%);
+  background-repeat: no-repeat;
+  background-position: 0 95%;
+  background-size: 100% 20%;
+  transition: 0.2s;
+}
+a:hover {
+  background-size: 100% 100%;
+  transition: 0.1s;
+}
+
+p {
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+i {
+  font-style: italic;
+}
+
+hr {
+  border: solid 1px #ddd;
+}
+
+.slider-label {
+  font-size: 1.2rem;
+}
+
+.tick {
+  font-size: 1.2rem;
+}
+
+.tooltip {
+  pointer-events: none;
+  position: absolute;
+  z-index: 9999;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  line-height: 1.4;
+}
+
+#sankey-diagram {
+  margin-top: 6px;
+  min-width: 540px;
+  max-height: 480px;
+}
+
+#sankey-diagram .legend-label {
+  font-size: 0.9rem;
+}
+
+#choropleth {
+  margin-top: 6px;
+  min-width: 720px;
+  max-height: 480px;
+}
+
+#choropleth .legend-label {
+  font-size: 0.9rem;
+}
+
+#choropleth .picker-label {
+  font-size: 1rem;
+  fill: #555;
+  cursor: pointer;
+  pointer-events: all;
+  text-transform: uppercase;
+}
+
+#choropleth .picker-label.active {
+  fill: #3F79B9;
+  font-weight: 700;
+}
+
+footer {
+  color: #333;
+  background-color: #eee;
+  font-size: 0.9rem;
+  margin-top: 36px;
+  padding: 36px 5% 12px 5%;
+}
+
+footer h4 {
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+footer p {
+  margin-bottom: 24px;
+}
+
+
+.factors-plot svg, .factors-plot text {
+  font: 10px sans-serif;
+  padding: 10px;
+}
+
+.axis,
+.frame {
+  shape-rendering: crispEdges;
+}
+
+.axis line {
+  stroke: #ddd;
+}
+
+.axis path {
+  display: none;
+}
+
+.cell text {
+  font-weight: bold;
+  text-transform: capitalize;
+  fill: black;
+}
+
+.frame {
+  fill: none;
+  stroke: #aaa;
+}
+
+circle {
+  fill-opacity: .7;
+}
+
+circle.hidden {
+  fill: #ccc !important;
+}
+
+.extent {
+  fill: #000;
+  fill-opacity: .125;
+  stroke: #fff;
+}
+
+/*
+#map {
+  margin: 10px 0px 0px 0px;
+  padding: 0px;
+}
+
+h2.year {
+  margin: 10px 0px 0px 0px;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.county {
+  fill: #fff;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+#legend text {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: 400;
+}
+
+.wide {
+  width: 140px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  padding: 1.5rem;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis g text {
+  display: none;
+}
+
+.dot {
+  stroke: #000;
+}
+*/
+

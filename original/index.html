@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="id-id">
+
+<head>
+  <meta charset="utf-8">
+  <title>Partisipasi Pendidikan di Indonesia</title>
+  <meta name="description" content="Visualisasi interaktif partisipasi pendidikan di Indonesia">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="node_modules/reset-css/reset.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400i,700|Lora:400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <meta name="theme-color" content="#3F79B9">
+</head>
+
+<body>
+  <section class="cover">
+    <div class="title-container">
+      <h1>Partisipasi Pendidikan</h1>
+      <div class="subtitle">di Indonesia</div>
+    </div>
+  </section>
+
+  <section class="story intro">
+    <div class="story-text">
+      Berbagai aspek pendidikan di Indonesia masih harus terus ditingkatkan.<br />
+      Visualisasi ini menampilkan kondisi pendidikan di Indonesia melalui beberapa ukuran data, <br />
+      khususnya yang terkait dengan tingkat partisipasi siswa dalam pendidikan.
+    </div>
+  </section>
+
+  <section class="story">
+    <h2>Persebaran Tingkat Partisipasi Pendidikan</h2>
+    <p class="description">
+      Salah satu ukuran tingkat partisipasi pendidikan adalah <a
+        href="https://sirusa.bps.go.id/index.php?r=indikator/view&id=9">angka partisipasi pendidikan murni</a>
+      (APM).<br />
+      APM untuk jenjang SD adalah persentase anak usia 7-12 tahun
+      yang mengikuti sekolah dasar.<br />
+      Peta ini menunjukkan persebaran APM per provinsi di Indonesia.
+    </p>
+    <svg id="choropleth"></svg>
+  </section>
+
+  <section class="story">
+    <h2>Persentase Siswa yang Melanjutkan Pendidikan ke Jenjang Berikutnya</h2>
+    <p class="description">
+      Diagram ini mendeskripsikan suatu angkatan siswa yang masuk kelas 1 SD di tahun yang sama.<br />
+      Dari 100% siswa yang mulai bersekolah, banyak yang tidak melanjutkan ke jenjang berikutnya atau bahkan <i>drop out</i>.
+    </p>
+    <svg id="sankey-diagram"></svg>
+  </section>
+
+  <section class="story">
+    <h2>Faktor-Faktor yang Mempengaruhi Tingkat Partisipasi Pendidikan</h2>
+    <p class="description">
+      Ada banyak faktor yang dapat mempengaruhi tingkat partisipasi pendidikan.<br />
+      Kumpulan <i>scatter plot</i> di bawah ini menampilkan korelasi antara faktor-faktor tersebut (sumbu X) dengan nilai APM (sumbu Y).<br />
+      Tiap titik merupakan satu poin data dari satu tahun. Titik berwarna merah adalah data untuk jenjang SD, biru untuk SMP, dan abu-abu untuk SMA.
+    </p>
+    <div class="factors-plot"></div>
+  </section>
+
+  <footer>
+    <h4>Sumber Data</h4>
+    <p>
+      Indonesia Educational Statistics in Brief, edisi tahun ajaran 2011/2012 -
+      2017/2018 oleh Kementrian Pendidikan dan Kebudayaan.<br />
+      <a href="https://www.bps.go.id/subject/28/pendidikan">Data Pendidikan</a> oleh Badan Penelitian dan Statistik
+      (diakses 19 Maret 2019).
+    </p>
+    <h4>Sumber Gambar</h4>
+    <p>
+      <a href="https://www.flickr.com/photos/kedubesaustralia/31176303361/in/photostream/">Merayakan 10 Tahun Kemitraan
+        Pendidikan Australia-Indonesia untuk Pembangunan Sekolah</a> oleh Australian Embassy Jakarta, dengan lisensi <a
+        href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>.
+    </p>
+    <p>
+      Dibuat oleh <a href="https://github.com/nathanchrs">Jonathan Christopher</a>, Rionaldi Chandraseta dan Aldrich
+      Valentino Halim
+      untuk kelas IF4061 Visualisasi Data tahun 2019 di Teknik Informatika ITB.<br />
+      Kode sumber dapat dilihat di <a href="https://github.com/nathanchrs/apm-vis">Github</a>.
+    </p>
+  </footer>
+
+  <script src="node_modules/d3/dist/d3.min.js"></script>
+  <script src="node_modules/d3-simple-slider/dist/d3-simple-slider.min.js"></script>
+  <script src="node_modules/topojson/dist/topojson.min.js"></script>
+  <script src="js/choropleth.js"></script>
+  <script src="d3-sankey-align-top.js"></script>
+  <script src="js/sankey.js"></script>
+  <script src='js/factors.js'></script>
+</body>
+
+</html>
